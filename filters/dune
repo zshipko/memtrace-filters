@@ -1,0 +1,3 @@
+(executable
+ (name irmin_index_memory)
+ (libraries str memtrace))
