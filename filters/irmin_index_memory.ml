@@ -40,16 +40,11 @@ let nbytes ~trace nsamples =
   nwords *. Float.of_int word_size /. 4.
 
 let is_package_name name trace alloc =
-  let i = ref 0 in
   Array.exists (fun loc ->
-      if !i >= Array.length alloc then
-        false
-      else
-        let exists = List.exists (fun loc ->
-            Str.string_match name loc.Location.defname 0
-          ) (Reader.lookup_location_code trace loc) in
-        incr i;
-        exists
+      let locs = Reader.lookup_location_code trace loc in
+      List.exists (fun loc ->
+          Str.string_match name loc.Location.defname 0
+        ) locs
     ) alloc
 
 let is_irmin = is_package_name irmin_package_name
