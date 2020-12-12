@@ -6,18 +6,18 @@ Compares allocations from `Index` and `Irmin`
 
 ### Usage
 
-Save output to file:
+Save image and data file:
 ```shell
-$ dune exec ./filters/irmin_index_memory.exe ../irmin/trace.ctf > data
+$ dune exec ./filters/irmin_index_memory.exe trace.ctf > data
 $ python3 plot/irmin_index.py data output.png
 ```
 
-Save output to file (using pipe):
+Save image to file (using pipe):
 ```shell
-$ dune exec ./filters/irmin_index_memory.exe ../irmin/trace.ctf | python3 plot/irmin_index.py - output.png
+$ dune exec ./filters/irmin_index_memory.exe trace.ctf | python3 plot/irmin_index.py - output.png
 ```
 
 Display in window:
 ```shell
-$ dune exec ./filters/irmin_index_memory.exe ../irmin/trace.ctf | python3 plot/irmin_index.py
+$ dune exec ./filters/irmin_index_memory.exe trace.ctf | python3 plot/irmin_index.py
 ```
