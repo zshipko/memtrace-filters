@@ -1,0 +1,3 @@
+(library
+ (name memtrace_filter)
+ (libraries memtrace str))
