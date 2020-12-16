@@ -2,14 +2,13 @@ import sys
 import pandas as pd
 import matplotlib.pyplot as plt
 
-if len(sys.argv) < 2 or sys.argv[1] == '-':
-    lines = sys.stdin.readlines()
-else:
-    lines = open(sys.argv[1]).readlines()
+from util import args, lines
+
+args = args("Plot comparison between irmin and index allocations")
 
 data = {}
-for line in lines:
-    keys = [x.replace('\n', '') for x in line.split(' ')]
+for line in lines(args.input):
+    keys = line.split(' ')
     for key in keys:
         k = key.split('=')
         if k[0] not in data:
@@ -22,9 +21,20 @@ for line in lines:
 df = pd.DataFrame(data)
 plot = df.plot(x='timestamp', y=["irmin", "index"], kind='line')
 plot.set(xlabel='Timestamp', ylabel='Memory (GB)')
-if len(sys.argv) < 3 or sys.argv[2] == '-':
+
+if args.logs is not None:
+    ymin, ymax = plot.get_ylim()
+    xmin, xmax = plot.get_xlim()
+    for line in lines(args.logs):
+        if 'Freeze begin' in line:
+            s = line.split(' ')
+            t = float(s[-1])
+            plot.axvline(x=t, color='m', label="freeze")
+
+
+if args.output == '-':
     plt.show()
     sys.exit(0)
 
 fig = plot.get_figure()
-fig.savefig(sys.argv[2])
+fig.savefig(args.output)
