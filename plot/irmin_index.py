@@ -4,7 +4,10 @@ import matplotlib.pyplot as plt
 
 from util import args, lines
 
-args = args("Plot comparison between irmin and index allocations")
+def init(parser):
+    parser.add_argument('--total', default=False, type=bool, help='plot total memory allocations also')
+
+args = args("Plot comparison between irmin and index allocations", init=init)
 
 data = {}
 for line in lines(args.input):
@@ -19,7 +22,10 @@ for line in lines(args.input):
             data[k[0]].append(float(k[1]))
 
 df = pd.DataFrame(data)
-plot = df.plot(x='timestamp', y=["irmin", "index"], kind='line')
+y = ["irmin", "index"]
+if args.total:
+    y.append("total")
+plot = df.plot(x='timestamp', y=y, kind='line')
 plot.set(xlabel='Timestamp', ylabel='Memory (GB)')
 
 if args.logs is not None:
