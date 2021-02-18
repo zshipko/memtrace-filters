@@ -1,11 +1,12 @@
 import sys
 import pandas as pd
 import matplotlib.pyplot as plt
+import datetime
 
 from util import args, lines
 
 def init(parser):
-    parser.add_argument('--total', default=False, type=bool, help='plot total memory allocations also')
+    parser.add_argument('--total', default=True, type=bool, help='plot total memory allocations also')
 
 args = args("Plot comparison between irmin and index allocations", init=init)
 
@@ -25,18 +26,12 @@ df = pd.DataFrame(data)
 y = ["irmin", "index"]
 if args.total:
     y.append("total")
-plot = df.plot(x='timestamp', y=y, kind='line')
+plot = df.plot(title=args.title, x='timestamp', y=y, kind='line')
 plot.set(xlabel='Timestamp', ylabel='Memory (GB)')
 
 if args.logs is not None:
-    ymin, ymax = plot.get_ylim()
-    xmin, xmax = plot.get_xlim()
-    for line in lines(args.logs):
-        if 'Freeze begin' in line:
-            s = line.split(' ')
-            t = float(s[-1])
-            plot.axvline(x=t, color='m', label="freeze")
-
+    # TODO: plot freezes from logs using plot.axvline
+    pass
 
 if args.output == '-':
     plt.show()

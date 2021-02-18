@@ -13,6 +13,7 @@ def args(title, init = None):
     parser.add_argument('--input', '-i', default='-', help='input path or "-" for stdin')
     parser.add_argument('--output', '-o', default='-', help='output path or "-" to display the graph in a window')
     parser.add_argument('--logs', default=None, help='irmin-pack benchmark log output (with stats enabled)')
+    parser.add_argument('--title', default='', type=str, help='set title for plot')
     if init is not None:
         init(parser)
     return parser.parse_args()
