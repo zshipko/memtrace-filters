@@ -23,10 +23,9 @@ for line in lines(args.input):
             data[k[0]].append(float(k[1]))
 
 df = pd.DataFrame(data)
-y = ["irmin", "index"]
-if args.total:
-    y.append("total")
-plot = df.plot(title=args.title, x='timestamp', y=y, kind='line')
+y = ["total"] if args.total else []
+y += ["irmin", "index"]
+plot = df.plot(title=args.title.expandtabs(), x='timestamp', y=y, kind='line')
 plot.set(xlabel='Timestamp', ylabel='Memory (GB)')
 
 if args.logs is not None:
