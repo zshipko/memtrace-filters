@@ -37,3 +37,7 @@ Display in window:
 $ dune exec ./filters/irmin_index_memory.exe ../irmin/trace.ctf | python3 plot/irmin_index.py
 ```
 
+Change title:
+```shell
+$ dune exec ./filters/irmin_index_memory.exe ../irmin/trace.ctf --title=$'my title with \n and \t will be displayed correctly'
+```
