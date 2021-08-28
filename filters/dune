@@ -1,3 +1,9 @@
 (executable
  (name irmin_index_memory)
+ (modules irmin_index_memory)
+ (libraries memtrace_filter))
+
+(executable
+ (name allocations)
+ (modules allocations)
  (libraries memtrace_filter))

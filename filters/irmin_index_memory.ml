@@ -37,21 +37,20 @@ let is_index trace alloc alloc_len =
 
 let () =
   let trace = Reader.open_ ~filename:Sys.argv.(1) in
-  let index_size = Stat.init () in
-  let irmin_size = Stat.init () in
-  let total_size = Stat.init () in
+  let index_size = Stat.init trace in
+  let irmin_size = Stat.init trace in
+  let total_size = Stat.init trace in
   Reader.iter trace (fun time ev ->
       match ev with
       | Alloc alloc ->
-          let size = nbytes ~trace alloc.nsamples in
-          Stat.add total_size alloc.obj_id size;
+          Stat.add total_size alloc.obj_id alloc.nsamples;
           if is_index trace alloc.backtrace_buffer alloc.backtrace_length then (
-            Stat.add index_size alloc.obj_id size;
-            print_alloc time index_size irmin_size total_size )
+            Stat.add index_size alloc.obj_id alloc.nsamples;
+            print_alloc time index_size irmin_size total_size)
           else if is_irmin trace alloc.backtrace_buffer alloc.backtrace_length
           then (
-            Stat.add irmin_size alloc.obj_id size;
-            print_alloc time index_size irmin_size total_size )
+            Stat.add irmin_size alloc.obj_id alloc.nsamples;
+            print_alloc time index_size irmin_size total_size)
       | Collect id ->
           Stat.remove total_size id;
           Stat.remove index_size id;
